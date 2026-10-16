@@ -1,3 +1,4 @@
+
 <h3>Penjumlahan Dua Bilangan</h3>
 
 <label>Bilangan pertama:</label>
@@ -14,20 +15,42 @@
 
 <p id="hasil"></p>
 
+<hr>
+
+<h3>Menghitung Suku ke-20 Fibonacci</h3>
+
+<button onclick="hitungFibonacci()">Hitung Fibonacci</button>
+
+<p id="hasilFibonacci"></p>
+
 <script>
 function hitung() {
-  let a = document.getElementById("bil1").value;
-  let b = document.getElementById("bil2").value;
+    let a = document.getElementById("bil1").value;
+    let b = document.getElementById("bil2").value;
 
-  if (a === "" || b === "") {
-    document.getElementById("hasil").innerHTML =
-      "Masukkan kedua bilangan terlebih dahulu.";
-    return;
-  }
+    if (a === "" || b === "") {
+        document.getElementById("hasil").textContent =
+            "Masukkan kedua bilangan terlebih dahulu.";
+        return;
+    }
 
-  let jumlah = Number(a) + Number(b);
+    let jumlah = Number(a) + Number(b);
 
-  document.getElementById("hasil").innerHTML =
-    "Hasil penjumlahan: " + jumlah;
+    document.getElementById("hasil").textContent =
+        "Hasil penjumlahan: " + jumlah;
+}
+
+function hitungFibonacci() {
+    let a = 0;
+    let b = 1;
+
+    for (let i = 2; i <= 20; i++) {
+        let berikutnya = a + b;
+        a = b;
+        b = berikutnya;
+    }
+
+    document.getElementById("hasilFibonacci").textContent =
+        "Suku ke-20 Fibonacci adalah: " + b;
 }
 </script>
