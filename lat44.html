@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penilaian Huruf Mutu</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 40px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 12px #00000015;
+        }
+
+        h2 {
+            text-align: center;
+            color: #1e293b;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+
+        #hasil {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px;
+            transition: background 0.3s;
+        }
+
+        #huruf {
+            font-size: 48px;
+            font-weight: bold;
+        }
+
+        #pesan {
+            font-weight: bold;
+        }
+
+        .A {
+            background: #bbf7d0;
+            color: #166534;
+        }
+
+        .B {
+            background: #d9f99d;
+            color: #3f6212;
+        }
+
+        .C {
+            background: #fef08a;
+            color: #854d0e;
+        }
+
+        .D {
+            background: #fed7aa;
+            color: #9a3412;
+        }
+
+        .E {
+            background: #fecaca;
+            color: #991b1b;
+        }
+
+        .error {
+            display: block !important;
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Penilaian Huruf Mutu</h2>
+
+        <label for="nama">Nama Mahasiswa:</label>
+        <input
+            type="text"
+            id="nama"
+            placeholder="Masukkan nama kamu"
+        >
+
+        <label for="nilai">Nilai Akhir:</label>
+        <input
+            type="text"
+            id="nilai"
+            inputmode="decimal"
+            placeholder="Masukkan nilai 0-100"
+            oninput="hitungNilai()"
+        >
+
+        <div id="hasil">
+            <div id="pesan"></div>
+            <div id="huruf"></div>
+            <div id="keterangan"></div>
+        </div>
+    </div>
+
+    <script>
+        function hitungNilai() {
+            const nama = document.getElementById("nama").value.trim();
+            const inputNilai = document.getElementById("nilai").value.trim();
+
+            const hasil = document.getElementById("hasil");
+            const pesan = document.getElementById("pesan");
+            const huruf = document.getElementById("huruf");
+            const keterangan = document.getElementById("keterangan");
+
+            hasil.style.display = "block";
+            hasil.className = "";
+            huruf.textContent = "";
+            keterangan.textContent = "";
+
+            // Periksa apakah input kosong
+            if (inputNilai === "") {
+                hasil.style.display = "none";
+                return;
+            }
+
+            // Periksa apakah nilai berupa angka
+            const nilai = Number(inputNilai);
+
+            if (!Number.isFinite(nilai)) {
+                hasil.className = "error";
+                pesan.textContent = "Error: Nilai harus berupa angka!";
+                return;
+            }
+
+            // Periksa nilai negatif
+            if (nilai < 0) {
+                hasil.className = "error";
+                pesan.textContent = "Error: Nilai tidak boleh negatif!";
+                return;
+            }
+
+            // Periksa nilai lebih dari 100
+            if (nilai > 100) {
+                hasil.className = "error";
+                pesan.textContent = "Error: Nilai tidak boleh lebih dari 100!";
+                return;
+            }
+
+            // Tentukan huruf mutu
+            let mutu;
+
+            if (nilai < 49.5) {
+                mutu = "E";
+            } else if (nilai < 59.5) {
+                mutu = "D";
+            } else if (nilai < 74.5) {
+                mutu = "C";
+            } else if (nilai < 84.5) {
+                mutu = "B";
+            } else {
+                mutu = "A";
+            }
+
+            // Tampilkan hasil dan warna sesuai huruf mutu
+            hasil.className = mutu;
+            pesan.textContent = nama
+                ? "Hasil nilai " + nama
+                : "Hasil huruf mutu kamu";
+
+            huruf.textContent = mutu;
+            keterangan.textContent =
+                "Nilai akhir: " + nilai;
+        }
+    </script>
+</body>
+</html>
