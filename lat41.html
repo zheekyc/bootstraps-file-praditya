@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menampilkan Waktu</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #jam {
+            font-size: 40px;
+            font-weight: bold;
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Jam Digital</h1>
+    <p>Waktu sekarang:</p>
+    <div id="jam">00:00:00</div>
+
+    <script>
+        function tampilkanWaktu() {
+            let sekarang = new Date();
+
+            let jam = String(sekarang.getHours()).padStart(2, '0');
+            let menit = String(sekarang.getMinutes()).padStart(2, '0');
+            let detik = String(sekarang.getSeconds()).padStart(2, '0');
+
+            document.getElementById("jam").innerHTML =
+                jam + ":" + menit + ":" + detik;
+        }
+
+        tampilkanWaktu();
+        setInterval(tampilkanWaktu, 1000);
+    </script>
+
+</body>
+</html>
