@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menghitung Usia</title>
+</head>
+<body>
+
+    <label for="tanggalLahir">Tanggal lahir kamu:</label>
+    <input type="date" id="tanggalLahir">
+
+    <p id="hasilUsia"></p>
+
+    <script>
+        const inputTanggal = document.getElementById("tanggalLahir");
+        const hasilUsia = document.getElementById("hasilUsia");
+
+        inputTanggal.addEventListener("input", function () {
+            const nilaiTanggal = inputTanggal.value;
+
+            if (nilaiTanggal === "") {
+                hasilUsia.textContent = "";
+                return;
+            }
+
+            const [tahun, bulan, hari] = nilaiTanggal
+                .split("-")
+                .map(Number);
+
+            const tanggalLahir = new Date(
+                tahun, bulan - 1, hari
+            );
+
+            const sekarang = new Date();
+
+            // Memastikan tanggal lahir valid
+            if (
+                tanggalLahir.getFullYear() !== tahun ||
+                tanggalLahir.getMonth() !== bulan - 1 ||
+                tanggalLahir.getDate() !== hari ||
+                tanggalLahir > sekarang
+            ) {
+                hasilUsia.textContent =
+                    "Masukkan tanggal lahir yang valid.";
+                return;
+            }
+
+            let tahunUsia =
+                sekarang.getFullYear() - tahun;
+            let bulanUsia =
+                sekarang.getMonth() - (bulan - 1);
+            let hariUsia =
+                sekarang.getDate() - hari;
+
+            if (hariUsia < 0) {
+                bulanUsia--;
+
+                const jumlahHariBulanLalu = new Date(
+                    sekarang.getFullYear(),
+                    sekarang.getMonth(),
+                    0
+                ).getDate();
+
+                hariUsia += jumlahHariBulanLalu;
+            }
+
+            if (bulanUsia < 0) {
+                tahunUsia--;
+                bulanUsia += 12;
+            }
+
+            hasilUsia.textContent =
+                `Kamu sudah berusia ${tahunUsia} tahun ` +
+                `${bulanUsia} bulan ${hariUsia} hari.`;
+        });
+    </script>
+
+</body>
+</html>
