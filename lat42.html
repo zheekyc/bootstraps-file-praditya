@@ -1,78 +1,107 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menghitung Usia</title>
+    <title>Penghitung Usia</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 100px;
+            background-color: #f0f4f8;
+        }
+
+        .container {
+            background: white;
+            padding: 30px;
+            margin: auto;
+            max-width: 400px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        p {
+            margin-top: 20px;
+            font-size: 17px;
+            color: #2563eb;
+        }
+    </style>
 </head>
 <body>
 
-    <label for="tanggalLahir">Tanggal lahir kamu:</label>
-    <input type="date" id="tanggalLahir">
+    <div class="container">
+        <label for="tanggalLahir">16 july 2007</label>
 
-    <p id="hasilUsia"></p>
+        <input type="date" id="tanggalLahir">
+
+        <p id="hasil"></p>
+    </div>
 
     <script>
         const inputTanggal = document.getElementById("tanggalLahir");
-        const hasilUsia = document.getElementById("hasilUsia");
+        const hasil = document.getElementById("hasil");
 
         inputTanggal.addEventListener("input", function () {
-            const nilaiTanggal = inputTanggal.value;
-
-            if (nilaiTanggal === "") {
-                hasilUsia.textContent = "";
+            if (!inputTanggal.value) {
+                hasil.textContent = "";
                 return;
             }
 
-            const [tahun, bulan, hari] = nilaiTanggal
-                .split("-")
-                .map(Number);
+            const [tahunLahir, bulanLahir, hariLahir] =
+                inputTanggal.value.split("-").map(Number);
 
-            const tanggalLahir = new Date(
-                tahun, bulan - 1, hari
+            const lahir = new Date(
+                tahunLahir, bulanLahir - 1, hariLahir
             );
 
             const sekarang = new Date();
+            sekarang.setHours(0, 0, 0, 0);
 
-            // Memastikan tanggal lahir valid
-            if (
-                tanggalLahir.getFullYear() !== tahun ||
-                tanggalLahir.getMonth() !== bulan - 1 ||
-                tanggalLahir.getDate() !== hari ||
-                tanggalLahir > sekarang
-            ) {
-                hasilUsia.textContent =
-                    "Masukkan tanggal lahir yang valid.";
+            if (lahir > sekarang) {
+                hasil.textContent = "Tanggal lahir tidak valid.";
                 return;
             }
 
-            let tahunUsia =
-                sekarang.getFullYear() - tahun;
-            let bulanUsia =
-                sekarang.getMonth() - (bulan - 1);
-            let hariUsia =
-                sekarang.getDate() - hari;
+            let tahun = sekarang.getFullYear() - tahunLahir;
+            let bulan = sekarang.getMonth() - (bulanLahir - 1);
+            let hari = sekarang.getDate() - hariLahir;
 
-            if (hariUsia < 0) {
-                bulanUsia--;
+            if (hari < 0) {
+                bulan--;
 
-                const jumlahHariBulanLalu = new Date(
+                const hariBulanSebelumnya = new Date(
                     sekarang.getFullYear(),
                     sekarang.getMonth(),
                     0
                 ).getDate();
 
-                hariUsia += jumlahHariBulanLalu;
+                hari += hariBulanSebelumnya;
             }
 
-            if (bulanUsia < 0) {
-                tahunUsia--;
-                bulanUsia += 12;
+            if (bulan < 0) {
+                tahun--;
+                bulan += 12;
             }
 
-            hasilUsia.textContent =
-                `Kamu sudah berusia ${tahunUsia} tahun ` +
-                `${bulanUsia} bulan ${hariUsia} hari.`;
+            hasil.textContent =
+                `Kamu sudah berusia ${tahun} tahun ${bulan} bulan ${hari} hari`;
         });
     </script>
 
